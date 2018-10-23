@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  Localizing
+
+  Created by Jn.Huang on 2018/10/15.
+  Copyright © 2018年 huang. All rights reserved.
+*/
+"name" = "名字";
+"login" = "登录";
+"input" = "输入";
+"placeholder" = "占位符";
+"password" = "密码";
+"press" = "按下";
+"setuplang" = "正在设置语言...";
