@@ -25,7 +25,7 @@
 
 
 # StoaryBoard/Xib多语言
-#####通常如果StoaryBoard / Xib要支持多语言，有两种方法
+##### 通常如果StoaryBoard / Xib要支持多语言，有两种方法
 - 一个是
 ![image.png](https://upload-images.jianshu.io/upload_images/949605-f92ba3a8bb5a0f72.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/300)
 在Localization里勾选相应的Localizable Strings,这样每个StoaryBoard / Xib 都生成对应的几个Localizable Strings文件，一旦界面有改动，并不会同步到Localizable Strings文件里，很麻烦。
@@ -33,7 +33,7 @@
 - 第二个办法
 就是IBOutlet每个需要多语言的控件，有很多控件的文字就是写死的，这样做也是很麻烦
 
-#####本文给出两个方法是让你在StoaryBoard / Xib界面上直接支持多语言 如 UILabel 控件，为UILable生成一个分类UILabel + XIBLocalizable,同理其他UIButton UITextField UITextVIew等都可以生成对应的分类，这里只举UILable作为例子。
+##### 本文给出两个方法是让你在StoaryBoard / Xib界面上直接支持多语言 如 UILabel 控件，为UILable生成一个分类UILabel + XIBLocalizable,同理其他UIButton UITextField UITextVIew等都可以生成对应的分类，这里只举UILable作为例子。
  - 第一个办法利用IBInspectable修饰属性
       ```
       @interface UILabel (XIBLocalizabe)
