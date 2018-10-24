@@ -1,6 +1,6 @@
 # Localizing
-轻松搞定StoaryBoard / Xib多语言，App内切换多语言
-###本文会用gif详细演示如何支持多语言，如何轻松搞定StroaryBoard / Xib的多语言,以及App内切换多语言。
+
+### 本文会用gif详细演示如何支持多语言，如何轻松搞定StroaryBoard / Xib的多语言,以及App内切换多语言。
 
 
 # 首先让程序支持多语言
