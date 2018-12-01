@@ -102,7 +102,7 @@ return [super localizedStringForKey:key value:value table:tableName];
 ![Localize5.gif](https://upload-images.jianshu.io/upload_images/949605-bedbbaee2e45b7b3.gif?imageMogr2/auto-orient/strip)
 
 
-#NSLocalizedString加上参数 并且根据语言的不同指定参数的顺序
+# NSLocalizedString加上参数 并且根据语言的不同指定参数的顺序
 Locaizable.strings(Chinese (Simplified))
 ```
 "birth" = "我出生在 %@";
