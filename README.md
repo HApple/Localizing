@@ -1,31 +1,32 @@
 # Localizing
 
-### 本文会用gif详细演示如何支持多语言，如何轻松搞定StroaryBoard / Xib的多语言,以及App内切换多语言。
+###本文会用gif详细演示如何支持多语言，如何轻松搞定StroaryBoard / Xib的多语言,以及App内切换多语言。最后
+说下加上参数 和 参数顺序的NSLocalizedString
 
 
-# 首先让程序支持多语言
+#首先让程序支持多语言
 - 创建一个 Localizable 名字的文件，注意 L 一定要大写
 - 切换到 Project 里，添加需要支持的语言，这里只做支持英文 中文
 ![Localize1.gif](https://upload-images.jianshu.io/upload_images/949605-a5482b6ec9e61ef8.gif?imageMogr2/auto-orient/strip)
 
-# 上面步骤完后，会出现两个文件Localizable.strings(English) Localizable.strings(Simplified)
+#上面步骤完后，会出现两个文件Localizable.strings(English) Localizable.strings(Simplified)
 
 以 "key" = "value" 的方式添加多语言,如下图，左边的是英文，右边的是中文
 ![image.png](https://upload-images.jianshu.io/upload_images/949605-8b07fd50db0ef72c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
- 代码用NSLocalizedString(@"key", nil)调用
+代码用NSLocalizedString(@"key", nil)调用
 如：  
 
-      self.label.text = NSLocalizedString(@"password", nil);
-      [self.button setTitle:NSLocalizedString(@"press", nil) forState:UIControlStateNormal];
+self.label.text = NSLocalizedString(@"password", nil);
+[self.button setTitle:NSLocalizedString(@"press", nil) forState:UIControlStateNormal];
 
 
 
 ![Localize2.gif](https://upload-images.jianshu.io/upload_images/949605-301ab22e025dc454.gif?imageMogr2/auto-orient/strip)
 
 
-# StoaryBoard/Xib多语言
-##### 通常如果StoaryBoard / Xib要支持多语言，有两种方法
+#StoaryBoard/Xib多语言
+#####通常如果StoaryBoard / Xib要支持多语言，有两种方法
 - 一个是
 ![image.png](https://upload-images.jianshu.io/upload_images/949605-f92ba3a8bb5a0f72.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/300)
 在Localization里勾选相应的Localizable Strings,这样每个StoaryBoard / Xib 都生成对应的几个Localizable Strings文件，一旦界面有改动，并不会同步到Localizable Strings文件里，很麻烦。
@@ -33,22 +34,22 @@
 - 第二个办法
 就是IBOutlet每个需要多语言的控件，有很多控件的文字就是写死的，这样做也是很麻烦
 
-##### 本文给出两个方法是让你在StoaryBoard / Xib界面上直接支持多语言 如 UILabel 控件，为UILable生成一个分类UILabel + XIBLocalizable,同理其他UIButton UITextField UITextVIew等都可以生成对应的分类，这里只举UILable作为例子。
- - 第一个办法利用IBInspectable修饰属性
-      ```
-      @interface UILabel (XIBLocalizabe)
-      @property (nonatomic, copy)IBInspectable NSString *xibLocKey;
-      @end
+#####本文给出两个方法是让你在StoaryBoard / Xib界面上直接支持多语言 如 UILabel 控件，为UILable生成一个分类UILabel + XIBLocalizable,同理其他UIButton UITextField UITextVIew等都可以生成对应的分类，这里只举UILable作为例子。
+- 第一个办法利用IBInspectable修饰属性
+```
+@interface UILabel (XIBLocalizabe)
+@property (nonatomic, copy)IBInspectable NSString *xibLocKey;
+@end
 
-    ```
-       @implementation UILabel (XIBLocalizabe)
-        - (void)setXibLocKey:(NSString *)xibLocKey{
-        self.text = xibLocKey.localized;
-        }
-        -  (NSString *)xibLocKey{
-        return nil;
-        }
-        @end
+```
+@implementation UILabel (XIBLocalizabe)
+- (void)setXibLocKey:(NSString *)xibLocKey{
+self.text = xibLocKey.localized;
+}
+-  (NSString *)xibLocKey{
+return nil;
+}
+@end
 
 这样在界面上会多出一个Label属性，赋值上多语言对应的key值即可
 
@@ -61,47 +62,69 @@
 ![image.png](https://upload-images.jianshu.io/upload_images/949605-eca48ab2a772b3cd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/300)
 ![Localize4.gif](https://upload-images.jianshu.io/upload_images/949605-6ff6b4edd1735a4c.gif?imageMogr2/auto-orient/strip)
 
-# App内切换多语言
+#App内切换多语言
 这里引用了别人实现的 NSBundle+AppLanguageSwitch
 简单讲讲实现过程
- ```
+```
 + (void)load {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        object_setClass([NSBundle mainBundle],[ZZBundleEx class]);
-        NSString *language = [self getCusLanguage];
-        if (language) {
-            [self setCusLanguage:language];
-        }
-    });
+static dispatch_once_t onceToken;
+dispatch_once(&onceToken, ^{
+object_setClass([NSBundle mainBundle],[ZZBundleEx class]);
+NSString *language = [self getCusLanguage];
+if (language) {
+[self setCusLanguage:language];
 }
- ```
+});
+}
+```
 这里用了runtime的object_setClass,意思是将[NSBundle mainBundle]的对象指定到 ZZBundleEx 这个类上
- ```static const char kBundleKey = 0;
+```static const char kBundleKey = 0;
 @interface ZZBundleEx : NSBundle
 @end
 
 @implementation ZZBundleEx
 /*ZZBundleEx继承自NSBundle
 并重写了 - (NSString *)localizedStringForKey:(NSString *)key value:(nullable NSString *)value table:(nullable NSString *)tableName 方法
- 从NSBundle+AppLanguageSwitch的分类里取出关联属性 NSBundle值 ，这个值（即xxx.lproj的一个文件）是我们在分类里设定的对应语言的值，所以能达到在APP内切换语言的效果
- bundle :  .../Localizing.app/zh-Hans.lproj  中文
- bundle :  .../Localizing.app/en.lproj  英文
+从NSBundle+AppLanguageSwitch的分类里取出关联属性 NSBundle值 ，这个值（即xxx.lproj的一个文件）是我们在分类里设定的对应语言的值，所以能达到在APP内切换语言的效果
+bundle :  .../Localizing.app/zh-Hans.lproj  中文
+bundle :  .../Localizing.app/en.lproj  英文
 */
 - (NSString *)localizedStringForKey:(NSString *)key value:(NSString *)value table:(NSString *)tableName {
-    NSBundle *bundle = objc_getAssociatedObject(self, &kBundleKey);
-    if (bundle) {
-        return [bundle localizedStringForKey:key value:value table:tableName];
-    } else {
-        return [super localizedStringForKey:key value:value table:tableName];
-    }
+NSBundle *bundle = objc_getAssociatedObject(self, &kBundleKey);
+if (bundle) {
+return [bundle localizedStringForKey:key value:value table:tableName];
+} else {
+return [super localizedStringForKey:key value:value table:tableName];
+}
 }
 @end
 ```
 ![Localize5.gif](https://upload-images.jianshu.io/upload_images/949605-bedbbaee2e45b7b3.gif?imageMogr2/auto-orient/strip)
 
 
+#NSLocalizedString加上参数 并且根据语言的不同指定参数的顺序
+Locaizable.strings(Chinese (Simplified))
+```
+"birth" = "我出生在 %@";
+"from" = "我是来自%1$@的%2$@";
+```
+Locaizable.strings(English)
+```
+"birth" = "I was born in %@";
+"from" = "I am %2$@ from %1$@";
+```
+ViewController.m
+```
+//带参数的 NSLocalizedString
+self.birthLabel.text = [NSString stringWithFormat:NSLocalizedString(@"birth", nil),@"shenzhen"];
 
+//带参数 并且可以指定顺序的 NSLocalizedString
+self.fromLabel.text = [NSString stringWithFormat:NSLocalizedString(@"from", nil),@"shenzhen",@"hjn"];
+```
+看下效果
+![localizedstring_1.gif](https://upload-images.jianshu.io/upload_images/949605-66f1be7dad256811.gif?imageMogr2/auto-orient/strip)
 
-# Demo
+应该很直观了吧，带参数的话本地化文件里直接用%@代替，代码里用[NSString stringWithFormat:...]包裹，至于顺序就把 %@  变成 %1$@ 的代表放入第一参数的值... 以此类推
+
+#Demo
 最后附上 [github Demo](https://github.com/HApple/Localizing)

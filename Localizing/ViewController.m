@@ -21,6 +21,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *button;
 @property (nonatomic, copy)NSString *curLanguage;
 
+@property (weak, nonatomic) IBOutlet UILabel *fromLabel;
+@property (weak, nonatomic) IBOutlet UILabel *birthLabel;
+
 @property (nonatomic, assign)NSInteger number;
 @end
 
@@ -37,6 +40,13 @@
     self.curLanguage = [NSBundle getCusLanguage];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(languageChange:) name:ZZAppLanguageDidChangeNotification object:nil];
+    
+    
+    //带参数的 NSLocalizedString
+    self.birthLabel.text = [NSString stringWithFormat:NSLocalizedString(@"birth", nil),@"shenzhen"];
+    
+    //带参数 并且可以指定顺序的 NSLocalizedString
+    self.fromLabel.text = [NSString stringWithFormat:NSLocalizedString(@"from", nil),@"shenzhen",@"hjn"];
 }
 
 

@@ -14,3 +14,6 @@
 "setuplang" = "Setting up language...";
 
 
+"birth" = "I was born in %@";
+"from" = "I am %2$@ from %1$@";
+

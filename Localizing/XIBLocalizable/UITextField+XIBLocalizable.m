@@ -13,7 +13,7 @@
 @implementation UITextField (XIBLocalizable)
 
 -(void)setXibLocplaceHKey:(NSString *)xibLocplaceHKey{
-    self.placeholder = xibLocplaceHKey;
+    self.placeholder = xibLocplaceHKey.localized;
 }
 
 -(NSString *)xibLocplaceHKey{
